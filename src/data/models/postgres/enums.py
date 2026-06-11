@@ -1,0 +1,68 @@
+from enum import Enum
+
+
+class UserRole(str, Enum):
+    ADMIN = "ADMIN"
+    FINANCE_ASSOCIATE = "FINANCE_ASSOCIATE"
+    FINANCE_MANAGER = "FINANCE_MANAGER"
+
+
+class CompanyStatus(str, Enum):
+    ACTIVE = "ACTIVE"
+    INACTIVE = "INACTIVE"
+
+
+class VendorStatus(str, Enum):
+    ACTIVE = "ACTIVE"
+    INACTIVE = "INACTIVE"
+    BLOCKED = "BLOCKED"
+
+
+class PurchaseOrderStatus(str, Enum):
+    ACTIVE = "ACTIVE"
+    CLOSED = "CLOSED"
+    EXPIRED = "EXPIRED"
+
+
+class ExtractionStatus(str, Enum):
+    EXTRACTED = "EXTRACTED"
+    PENDING_REVIEW = "PENDING_REVIEW"
+    APPROVED = "APPROVED"
+    FAILED = "FAILED"
+
+
+class InvoiceStatus(str, Enum):
+    UNDER_VALIDATION = "UNDER_VALIDATION"
+    MATCH_ISSUES = "MATCH_ISSUES"
+    APPROVED_READY_TO_PAY = "APPROVED_READY_TO_PAY"
+    REJECTED = "REJECTED"
+    DISPUTED = "DISPUTED"
+    PAID = "PAID"
+    OVERDUE = "OVERDUE"
+    ON_HOLD = "ON_HOLD"
+
+
+class DisputeStatus(str, Enum):
+    OPEN = "OPEN"
+    IN_PROGRESS = "IN_PROGRESS"
+    RESOLVED = "RESOLVED"
+    CLOSED = "CLOSED"
+
+
+class CommunicationStatus(str, Enum):
+    DRAFT = "DRAFT"
+    REVIEWED = "REVIEWED"
+    SENT = "SENT"
+
+
+class IssueType(str, Enum):
+    VENDOR_MISMATCH = "VENDOR_MISMATCH"
+    COMPANY_MISMATCH = "COMPANY_MISMATCH"
+    DUPLICATE_INVOICE = "DUPLICATE_INVOICE"
+    PO_MISMATCH = "PO_MISMATCH"
+    PRICE_MISMATCH = "PRICE_MISMATCH"
+    QUANTITY_MISMATCH = "QUANTITY_MISMATCH"
+    TAX_MISMATCH = "TAX_MISMATCH"
+    TOTAL_MISMATCH = "TOTAL_MISMATCH"
+    MISSING_FIELD = "MISSING_FIELD"
+    LOW_CONFIDENCE = "LOW_CONFIDENCE"
