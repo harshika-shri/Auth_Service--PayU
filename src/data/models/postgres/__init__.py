@@ -5,6 +5,7 @@ from .company_master import CompanyMaster
 from .dispute_communications import DisputeCommunication
 from .disputes import Dispute
 from .extraction_field_confidence import ExtractionFieldConfidence
+from .gmail_monitoring_state import GmailMonitoringState
 from .invoice_extracted_vendor import InvoiceExtractedVendor
 from .invoice_line_items import InvoiceLineItem
 from .invoice_po_mapping import InvoicePOMapping
