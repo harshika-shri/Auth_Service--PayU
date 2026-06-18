@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from uuid import UUID, uuid4
 
-from sqlalchemy import Boolean, Enum, ForeignKey, String
+from sqlalchemy import Boolean, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.data.models.postgres.base import Base
 from src.data.models.postgres.enums import UserRole
 from src.data.models.postgres.mixins import TimestampMixin
+from src.data.models.postgres.types import user_role_enum
 
 
 class User(Base, TimestampMixin):
@@ -40,7 +41,7 @@ class User(Base, TimestampMixin):
     )
 
     role: Mapped[UserRole] = mapped_column(
-        Enum(UserRole),
+        user_role_enum(UserRole),
         nullable=False,
     )
 

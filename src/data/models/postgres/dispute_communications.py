@@ -8,10 +8,10 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from src.data.models.postgres.base import Base
 from src.data.models.postgres.enums import CommunicationStatus
-from src.data.models.postgres.mixins import TimestampMixin
+from src.data.models.postgres.mixins import CreatedAtMixin
 
 
-class DisputeCommunication(Base, TimestampMixin):
+class DisputeCommunication(Base, CreatedAtMixin):
     __tablename__ = "dispute_communications"
 
     id: Mapped[UUID] = mapped_column(
@@ -20,7 +20,7 @@ class DisputeCommunication(Base, TimestampMixin):
     )
 
     dispute_id: Mapped[UUID] = mapped_column(
-        ForeignKey("disputes.id"),
+        ForeignKey("disputes.id", ondelete="CASCADE"),
         nullable=False,
     )
 
@@ -32,6 +32,7 @@ class DisputeCommunication(Base, TimestampMixin):
 
     reviewed_by: Mapped[UUID | None] = mapped_column(
         ForeignKey("users.id"),
+        nullable=True,
     )
 
     recipient_email: Mapped[str] = mapped_column(
@@ -56,4 +57,5 @@ class DisputeCommunication(Base, TimestampMixin):
 
     sent_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
+        nullable=True,
     )

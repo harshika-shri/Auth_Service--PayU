@@ -3,7 +3,7 @@ from __future__ import annotations
 from decimal import Decimal
 from uuid import UUID, uuid4
 
-from sqlalchemy import ForeignKey, Integer, Numeric, String
+from sqlalchemy import ForeignKey, Integer, Numeric, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -31,9 +31,13 @@ class POLineItem(Base, TimestampMixin):
 
     item_code: Mapped[str | None] = mapped_column(
         String(100),
+        nullable=True,
     )
 
-    item_description: Mapped[str]
+    item_description: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+    )
 
     uom: Mapped[str] = mapped_column(
         String(50),
@@ -67,10 +71,6 @@ class POLineItem(Base, TimestampMixin):
 
     consumed_quantity: Mapped[Decimal] = mapped_column(
         Numeric(15, 3),
-        default=0,
-    )
-
-    pending_billed_quantity: Mapped[Decimal] = mapped_column(
-        Numeric(15, 3),
+        nullable=False,
         default=0,
     )

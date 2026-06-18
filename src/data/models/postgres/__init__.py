@@ -8,6 +8,7 @@ from .extraction_field_confidence import ExtractionFieldConfidence
 from .gmail_monitoring_state import GmailMonitoringState
 from .invoice_extracted_vendor import InvoiceExtractedVendor
 from .invoice_line_items import InvoiceLineItem
+from .invoice_line_po_allocations import InvoiceLinePOAllocation
 from .invoice_po_mapping import InvoicePOMapping
 from .invoice_self_checks import InvoiceSelfCheck
 from .invoice_validation_issues import InvoiceValidationIssue

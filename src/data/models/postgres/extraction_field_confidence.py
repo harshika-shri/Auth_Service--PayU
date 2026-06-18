@@ -1,16 +1,15 @@
 from __future__ import annotations
 
-from datetime import datetime
 from uuid import UUID, uuid4
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Numeric, String, Text
+from sqlalchemy import Boolean, ForeignKey, Numeric, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.data.models.postgres.base import Base
-from src.data.models.postgres.mixins import TimestampMixin
+from src.data.models.postgres.mixins import CreatedAtMixin
 
 
-class ExtractionFieldConfidence(Base, TimestampMixin):
+class ExtractionFieldConfidence(Base, CreatedAtMixin):
     __tablename__ = "extraction_field_confidence"
 
     id: Mapped[UUID] = mapped_column(
@@ -19,7 +18,7 @@ class ExtractionFieldConfidence(Base, TimestampMixin):
     )
 
     invoice_id: Mapped[UUID] = mapped_column(
-        ForeignKey("invoices.id"),
+        ForeignKey("invoices.id", ondelete="CASCADE"),
         nullable=False,
     )
 
@@ -30,6 +29,7 @@ class ExtractionFieldConfidence(Base, TimestampMixin):
 
     extracted_value: Mapped[str | None] = mapped_column(
         Text,
+        nullable=True,
     )
 
     confidence_score: Mapped[float] = mapped_column(
@@ -41,16 +41,4 @@ class ExtractionFieldConfidence(Base, TimestampMixin):
         Boolean,
         nullable=False,
         default=False,
-    )
-
-    corrected_value: Mapped[str | None] = mapped_column(
-        Text,
-    )
-
-    reviewed_by: Mapped[UUID | None] = mapped_column(
-        ForeignKey("users.id"),
-    )
-
-    reviewed_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True),
     )

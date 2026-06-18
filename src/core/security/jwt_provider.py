@@ -1,5 +1,5 @@
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import Any, cast
 from uuid import uuid4
 
 import jwt
@@ -23,10 +23,12 @@ class JWTProvider:
             ),
         }
 
-        return jwt.encode(
-            payload,
-            settings.JWT_SECRET_KEY,
-            algorithm=settings.JWT_ALGORITHM,
+        return str(
+            jwt.encode(
+                payload,
+                settings.JWT_SECRET_KEY,
+                algorithm=settings.JWT_ALGORITHM,
+            ),
         )
 
     def create_refresh_token(
@@ -48,10 +50,12 @@ class JWTProvider:
             "exp": expires_at,
         }
 
-        token = jwt.encode(
-            payload,
-            settings.JWT_SECRET_KEY,
-            algorithm=settings.JWT_ALGORITHM,
+        token = str(
+            jwt.encode(
+                payload,
+                settings.JWT_SECRET_KEY,
+                algorithm=settings.JWT_ALGORITHM,
+            ),
         )
 
         return (
@@ -64,12 +68,15 @@ class JWTProvider:
         self,
         token: str,
     ) -> dict[str, Any]:
-        return jwt.decode(
-            token,
-            settings.JWT_SECRET_KEY,
-            algorithms=[
-                settings.JWT_ALGORITHM,
-            ],
+        return cast(
+            dict[str, Any],
+            jwt.decode(
+                token,
+                settings.JWT_SECRET_KEY,
+                algorithms=[
+                    settings.JWT_ALGORITHM,
+                ],
+            ),
         )
 
 
