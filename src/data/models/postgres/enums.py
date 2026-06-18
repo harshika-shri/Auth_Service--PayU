@@ -2,67 +2,79 @@ from enum import Enum
 
 
 class UserRole(str, Enum):
-    ADMIN = "ADMIN"
-    FINANCE_ASSOCIATE = "FINANCE_ASSOCIATE"
-    FINANCE_MANAGER = "FINANCE_MANAGER"
+    ADMIN = "admin"
+    FINANCE_ASSOCIATE = "finance_associate"
+    FINANCE_MANAGER = "finance_manager"
 
 
 class CompanyStatus(str, Enum):
-    ACTIVE = "ACTIVE"
-    INACTIVE = "INACTIVE"
+    ACTIVE = "active"
+    INACTIVE = "inactive"
 
 
 class VendorStatus(str, Enum):
-    ACTIVE = "ACTIVE"
-    INACTIVE = "INACTIVE"
-    BLOCKED = "BLOCKED"
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    BLACKLISTED = "blacklisted"
+    SUSPENDED = "suspended"
 
 
 class PurchaseOrderStatus(str, Enum):
-    ACTIVE = "ACTIVE"
-    CLOSED = "CLOSED"
-    EXPIRED = "EXPIRED"
+    OPEN = "open"
+    PARTIALLY_PROCESSED = "partially_processed"
+    CLOSED = "closed"
 
 
 class ExtractionStatus(str, Enum):
-    EXTRACTED = "EXTRACTED"
-    PENDING_REVIEW = "PENDING_REVIEW"
-    APPROVED = "APPROVED"
-    FAILED = "FAILED"
+    PENDING = "pending"
+    OCR_PROCESSING = "ocr_processing"
+    EXTRACTED = "extracted"
+    LOW_CONFIDENCE = "low_confidence"
+    HUMAN_REVIEW_NEEDED = "human_review_needed"
+    EXTRACTION_APPROVED = "extraction_approved"
 
 
 class InvoiceStatus(str, Enum):
-    UNDER_VALIDATION = "UNDER_VALIDATION"
-    MATCH_ISSUES = "MATCH_ISSUES"
-    APPROVED_READY_TO_PAY = "APPROVED_READY_TO_PAY"
-    REJECTED = "REJECTED"
-    DISPUTED = "DISPUTED"
-    PAID = "PAID"
-    OVERDUE = "OVERDUE"
-    ON_HOLD = "ON_HOLD"
+    UNDER_VALIDATION = "under_validation"
+    MATCH_APPROVED = "match_approved"
+    MATCH_ISSUES = "match_issues"
+    APPROVED_READY_TO_PAY = "approved_ready_to_pay"
+    PENDING_ACTION = "pending_action"
+    OVERDUE = "overdue"
+    PAID = "paid"
 
 
 class DisputeStatus(str, Enum):
-    OPEN = "OPEN"
-    IN_PROGRESS = "IN_PROGRESS"
-    RESOLVED = "RESOLVED"
-    CLOSED = "CLOSED"
+    OPEN = "open"
+    IN_PROGRESS = "in_progress"
+    RESOLVED = "resolved"
+    ESCALATED = "escalated"
 
 
 class CommunicationStatus(str, Enum):
-    DRAFT = "DRAFT"
-    REVIEWED = "REVIEWED"
-    SENT = "SENT"
+    DRAFT = "draft"
+    APPROVED = "approved"
+    SENT = "sent"
 
 
 class IssueType(str, Enum):
-    VENDOR_MISMATCH = "VENDOR_MISMATCH"
-    COMPANY_MISMATCH = "COMPANY_MISMATCH"
-    DUPLICATE_INVOICE = "DUPLICATE_INVOICE"
-    PO_MISMATCH = "PO_MISMATCH"
-    PRICE_MISMATCH = "PRICE_MISMATCH"
-    QUANTITY_MISMATCH = "QUANTITY_MISMATCH"
-    TAX_MISMATCH = "TAX_MISMATCH"
-    TOTAL_MISMATCH = "TOTAL_MISMATCH"
-    MISSING_FIELD = "MISSING_FIELD"
-    LOW_CONFIDENCE = "LOW_CONFIDENCE"
+    LOW_CONFIDENCE = "low_confidence"
+    MISMATCH = "mismatch"
+    MISSING = "missing"
+    AMBIGUOUS = "ambiguous"
+    DUPLICATE = "duplicate"
+    INVALID = "invalid"
+
+
+class ValidationIssueStatus(str, Enum):
+    OPEN = "open"
+    ACKNOWLEDGED = "acknowledged"
+    RESOLVED = "resolved"
+    IGNORED = "ignored"
+
+
+class AllocationMatchType(str, Enum):
+    EXACT_CODE = "exact_code"
+    LLM_FUZZY = "llm_fuzzy"
+    SPLIT = "split"
+    MANUAL = "manual"

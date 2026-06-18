@@ -1,13 +1,16 @@
 from __future__ import annotations
 
-from datetime import datetime
 from uuid import UUID, uuid4
 
-from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, String, Text
+from sqlalchemy import Enum, ForeignKey, String, Text
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.data.models.postgres.base import Base
-from src.data.models.postgres.enums import IssueType
+from src.data.models.postgres.enums import (
+    IssueType,
+    ValidationIssueStatus,
+)
 from src.data.models.postgres.mixins import TimestampMixin
 
 
@@ -20,23 +23,28 @@ class InvoiceValidationIssue(Base, TimestampMixin):
     )
 
     invoice_id: Mapped[UUID] = mapped_column(
-        ForeignKey("invoices.id"),
+        ForeignKey("invoices.id", ondelete="CASCADE"),
         nullable=False,
     )
 
     check_stage: Mapped[str] = mapped_column(
-        String(100),
+        String(50),
         nullable=False,
     )
 
     check_name: Mapped[str] = mapped_column(
-        String(255),
+        String(100),
         nullable=False,
     )
 
-    description: Mapped[str] = mapped_column(
-        Text,
-        nullable=False,
+    field_name: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
+    field_path: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
     )
 
     issue_type: Mapped[IssueType] = mapped_column(
@@ -46,22 +54,27 @@ class InvoiceValidationIssue(Base, TimestampMixin):
 
     expected_value: Mapped[str | None] = mapped_column(
         Text,
+        nullable=True,
     )
 
     actual_value: Mapped[str | None] = mapped_column(
         Text,
+        nullable=True,
     )
 
-    is_resolved: Mapped[bool] = mapped_column(
-        Boolean,
+    description: Mapped[str] = mapped_column(
+        Text,
         nullable=False,
-        default=False,
     )
 
-    resolved_by: Mapped[UUID | None] = mapped_column(
-        ForeignKey("users.id"),
+    status: Mapped[ValidationIssueStatus] = mapped_column(
+        Enum(ValidationIssueStatus),
+        nullable=False,
+        default=ValidationIssueStatus.OPEN,
     )
 
-    resolved_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True),
+    issue_metadata: Mapped[dict | None] = mapped_column(
+        "metadata",
+        JSONB,
+        nullable=True,
     )

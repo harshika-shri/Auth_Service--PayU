@@ -6,10 +6,10 @@ from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.data.models.postgres.base import Base
-from src.data.models.postgres.mixins import TimestampMixin
+from src.data.models.postgres.mixins import CreatedAtMixin
 
 
-class InvoicePOMapping(Base, TimestampMixin):
+class InvoicePOMapping(Base, CreatedAtMixin):
     __tablename__ = "invoice_po_mapping"
 
     __table_args__ = (
@@ -26,11 +26,11 @@ class InvoicePOMapping(Base, TimestampMixin):
     )
 
     invoice_id: Mapped[UUID] = mapped_column(
-        ForeignKey("invoices.id"),
+        ForeignKey("invoices.id", ondelete="CASCADE"),
         nullable=False,
     )
 
     po_id: Mapped[UUID] = mapped_column(
-        ForeignKey("purchase_orders.id"),
+        ForeignKey("purchase_orders.id", ondelete="CASCADE"),
         nullable=False,
     )

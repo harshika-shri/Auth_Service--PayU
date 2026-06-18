@@ -4,12 +4,13 @@ from datetime import date
 from decimal import Decimal
 from uuid import UUID, uuid4
 
-from sqlalchemy import Date, Enum, ForeignKey, Numeric, String
+from sqlalchemy import Date, ForeignKey, Numeric, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.data.models.postgres.base import Base
 from src.data.models.postgres.enums import PurchaseOrderStatus
 from src.data.models.postgres.mixins import TimestampMixin
+from src.data.models.postgres.types import pg_enum
 
 
 class PurchaseOrder(Base, TimestampMixin):
@@ -26,24 +27,20 @@ class PurchaseOrder(Base, TimestampMixin):
         nullable=False,
     )
 
-    vendor_id: Mapped[UUID] = mapped_column(
+    vendor_id: Mapped[UUID | None] = mapped_column(
         ForeignKey("vendor_master.id"),
-        nullable=False,
-    )
-
-    client_name: Mapped[str] = mapped_column(
-        String(255),
-        nullable=False,
-    )
-
-    client_gstin: Mapped[str | None] = mapped_column(
-        String(20),
         nullable=True,
     )
 
-    client_address: Mapped[str | None]
+    company_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("company_master.id"),
+        nullable=True,
+    )
 
-    delivery_address: Mapped[str | None]
+    delivery_address: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
 
     currency: Mapped[str] = mapped_column(
         String(10),
@@ -85,16 +82,12 @@ class PurchaseOrder(Base, TimestampMixin):
 
     consumed_amount: Mapped[Decimal] = mapped_column(
         Numeric(15, 2),
-        default=0,
-    )
-
-    pending_billed_amount: Mapped[Decimal] = mapped_column(
-        Numeric(15, 2),
+        nullable=False,
         default=0,
     )
 
     status: Mapped[PurchaseOrderStatus] = mapped_column(
-        Enum(PurchaseOrderStatus),
+        pg_enum(PurchaseOrderStatus),
         nullable=False,
     )
 
@@ -103,7 +96,7 @@ class PurchaseOrder(Base, TimestampMixin):
         nullable=False,
     )
 
-    uploaded_by: Mapped[UUID] = mapped_column(
+    uploaded_by: Mapped[UUID | None] = mapped_column(
         ForeignKey("users.id"),
-        nullable=False,
+        nullable=True,
     )

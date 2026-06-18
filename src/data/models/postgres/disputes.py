@@ -20,7 +20,7 @@ class Dispute(Base, TimestampMixin):
     )
 
     invoice_id: Mapped[UUID] = mapped_column(
-        ForeignKey("invoices.id"),
+        ForeignKey("invoices.id", ondelete="CASCADE"),
         nullable=False,
     )
 
@@ -29,9 +29,9 @@ class Dispute(Base, TimestampMixin):
         nullable=False,
     )
 
-    assigned_to: Mapped[UUID] = mapped_column(
+    assigned_to: Mapped[UUID | None] = mapped_column(
         ForeignKey("users.id"),
-        nullable=False,
+        nullable=True,
     )
 
     reason_category: Mapped[str] = mapped_column(
@@ -41,6 +41,7 @@ class Dispute(Base, TimestampMixin):
 
     description: Mapped[str | None] = mapped_column(
         Text,
+        nullable=True,
     )
 
     status: Mapped[DisputeStatus] = mapped_column(
@@ -50,12 +51,15 @@ class Dispute(Base, TimestampMixin):
 
     resolution_notes: Mapped[str | None] = mapped_column(
         Text,
+        nullable=True,
     )
 
     resolved_by: Mapped[UUID | None] = mapped_column(
         ForeignKey("users.id"),
+        nullable=True,
     )
 
     resolved_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
+        nullable=True,
     )

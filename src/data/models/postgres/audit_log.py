@@ -6,10 +6,10 @@ from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.data.models.postgres.base import Base
-from src.data.models.postgres.mixins import TimestampMixin
+from src.data.models.postgres.mixins import CreatedAtMixin
 
 
-class AuditLog(Base, TimestampMixin):
+class AuditLog(Base, CreatedAtMixin):
     __tablename__ = "audit_log"
 
     id: Mapped[UUID] = mapped_column(
@@ -18,7 +18,7 @@ class AuditLog(Base, TimestampMixin):
     )
 
     invoice_id: Mapped[UUID] = mapped_column(
-        ForeignKey("invoices.id"),
+        ForeignKey("invoices.id", ondelete="CASCADE"),
         nullable=False,
     )
 
@@ -29,16 +29,20 @@ class AuditLog(Base, TimestampMixin):
 
     performed_by: Mapped[UUID | None] = mapped_column(
         ForeignKey("users.id"),
+        nullable=True,
     )
 
     old_status: Mapped[str | None] = mapped_column(
         String(100),
+        nullable=True,
     )
 
     new_status: Mapped[str | None] = mapped_column(
         String(100),
+        nullable=True,
     )
 
     remarks: Mapped[str | None] = mapped_column(
         Text,
+        nullable=True,
     )

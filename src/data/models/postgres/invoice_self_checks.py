@@ -6,10 +6,10 @@ from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.data.models.postgres.base import Base
-from src.data.models.postgres.mixins import TimestampMixin
+from src.data.models.postgres.mixins import CreatedAtMixin
 
 
-class InvoiceSelfCheck(Base, TimestampMixin):
+class InvoiceSelfCheck(Base, CreatedAtMixin):
     __tablename__ = "invoice_self_checks"
 
     id: Mapped[UUID] = mapped_column(
@@ -18,7 +18,7 @@ class InvoiceSelfCheck(Base, TimestampMixin):
     )
 
     invoice_id: Mapped[UUID] = mapped_column(
-        ForeignKey("invoices.id"),
+        ForeignKey("invoices.id", ondelete="CASCADE"),
         nullable=False,
     )
 
@@ -44,8 +44,10 @@ class InvoiceSelfCheck(Base, TimestampMixin):
 
     detected_value: Mapped[str | None] = mapped_column(
         Text,
+        nullable=True,
     )
 
     expected_value: Mapped[str | None] = mapped_column(
         Text,
+        nullable=True,
     )
