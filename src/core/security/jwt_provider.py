@@ -64,6 +64,27 @@ class JWTProvider:
             expires_at,
         )
 
+    def create_password_reset_token(
+        self,
+        user_id: str,
+    ) -> str:
+        payload = {
+            "sub": user_id,
+            "token_type": "password_reset",
+            "exp": datetime.now(UTC)
+            + timedelta(
+                minutes=settings.PASSWORD_RESET_TOKEN_EXPIRE_MINUTES,
+            ),
+        }
+
+        return str(
+            jwt.encode(
+                payload,
+                settings.JWT_SECRET_KEY,
+                algorithm=settings.JWT_ALGORITHM,
+            ),
+        )
+
     def decode_token(
         self,
         token: str,

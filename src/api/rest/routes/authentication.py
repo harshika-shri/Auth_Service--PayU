@@ -6,12 +6,18 @@ from src.api.rest.dependencies import get_current_user, get_db_session
 from src.core.services.authentication_service import (
     AuthenticationService,
 )
+from src.core.services.password_reset_service import (
+    PasswordResetService,
+)
 from src.data.models.postgres.users import User
 from src.schemas.authentication_schema import (
     ChangePasswordRequest,
+    ForgotPasswordRequest,
     LoginResponse,
+    MessageResponse,
     RefreshResponse,
     RefreshTokenRequest,
+    ResetPasswordRequest,
 )
 
 router = APIRouter(
@@ -74,6 +80,45 @@ async def logout(
 
     return await auth_service.logout(
         payload.refresh_token,
+    )
+
+
+@router.post(
+    "/forgot-password",
+    response_model=MessageResponse,
+)
+async def forgot_password(
+    payload: ForgotPasswordRequest,
+    db: AsyncSession = Depends(
+        get_db_session,
+    ),
+) -> dict[str, str]:
+    service = PasswordResetService(
+        db,
+    )
+
+    return await service.request_password_reset(
+        payload.email,
+    )
+
+
+@router.post(
+    "/reset-password",
+    response_model=MessageResponse,
+)
+async def reset_password(
+    payload: ResetPasswordRequest,
+    db: AsyncSession = Depends(
+        get_db_session,
+    ),
+) -> dict[str, str]:
+    service = PasswordResetService(
+        db,
+    )
+
+    return await service.reset_password(
+        token=payload.token,
+        new_password=payload.new_password,
     )
 
 

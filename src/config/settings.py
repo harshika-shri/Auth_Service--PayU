@@ -18,6 +18,20 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
+    SENDGRID_API_KEY: str = Field(
+        default="",
+        validation_alias="SENDGRID_API_KEY",
+    )
+    SENDGRID_FROM_EMAIL: str = Field(
+        default="",
+        validation_alias="SENDGRID_FROM_EMAIL",
+    )
+    FRONTEND_URL: str = Field(
+        default="http://localhost:5173",
+        validation_alias="FRONTEND_URL",
+    )
+    PASSWORD_RESET_TOKEN_EXPIRE_MINUTES: int = 60
+
     @model_validator(mode="after")
     def build_database_url(self) -> "Settings":
         if not self.DATABASE_URL:
